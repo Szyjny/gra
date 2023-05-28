@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="pl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="/photos/tapeta.jpg" type="image/x-icon">
+    <link rel="stylesheet" href="/GameFiles/LPaktUK.css">
+    <title>Wybieranie postaci</title>
+</head>
+
+<body>
+    <section class="selectCharacterCard">
+        <div id="goToGame">
+            <a id="goToGameButton">Wybierz postać</a>
+        </div>
+        <table class="selectCharacterPanel" cellspacing="10">
+            <tr>
+                <td>
+                    <input type="radio" name="selectCharacterSwitch" value="Sagan" onchange="chooseCharacter(this)">
+                </td>
+                <td>
+                    <p>← Sagan</p>
+                </td>
+                <td>
+                    <input type="radio" name="selectCharacterSwitch" value="Czupryńska"
+                        onchange="chooseCharacter(this)">
+                </td>
+                <td>
+                    <p>← Czupryńska</p>
+                </td>
+                <td>
+                    <input type="radio" name="selectCharacterSwitch" value="Bejrowicz" onchange="chooseCharacter(this)">
+                </td>
+                <td>
+                    <p>← Bejrowicz</p>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input type="radio" name="selectCharacterSwitch" value="Dolega" onchange="chooseCharacter(this)">
+                </td>
+                <td>
+                    <p>← Dolega</p>
+                </td>
+                <td>
+                    <input type="radio" name="selectCharacterSwitch" value="Krystian" onchange="chooseCharacter(this)">
+                </td>
+                <td>
+                    <p>← Krystian</p>
+                </td>
+                <td>
+                    <input type="radio" name="selectCharacterSwitch" value="Szkolny laptop"
+                        onchange="chooseCharacter(this)">
+                </td>
+                <td>
+                    <p>← Szkolny laptop</p>
+                </td>
+            </tr>
+        </table>
+    </section>
+</body>
+
+<script src="/GameFiles/LPaktUK.js"></script>
+
+</html>
