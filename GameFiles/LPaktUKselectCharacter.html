@@ -21,20 +21,20 @@
                     <input type="radio" name="selectCharacterSwitch" value="Sagan" onchange="chooseCharacter(this)">
                 </td>
                 <td>
-                    <p>← Sagan</p>
+                    <p onclick="openDialog(this)" title="Sagan">← Sagan</p>
                 </td>
                 <td>
                     <input type="radio" name="selectCharacterSwitch" value="Czupryńska"
                         onchange="chooseCharacter(this)">
                 </td>
                 <td>
-                    <p>← Czupryńska</p>
+                    <p onclick="openDialog(this)" title="Czupryńska">← Czupryńska</p>
                 </td>
                 <td>
                     <input type="radio" name="selectCharacterSwitch" value="Bejrowicz" onchange="chooseCharacter(this)">
                 </td>
                 <td>
-                    <p>← Bejrowicz</p>
+                    <p onclick="openDialog(this)" title="Bejrowicz">← Bejrowicz</p>
                 </td>
             </tr>
             <tr>
@@ -42,23 +42,37 @@
                     <input type="radio" name="selectCharacterSwitch" value="Dolega" onchange="chooseCharacter(this)">
                 </td>
                 <td>
-                    <p>← Dolega</p>
+                    <p onclick="openDialog(this)" title="Dolega">← Dolega</p>
                 </td>
                 <td>
                     <input type="radio" name="selectCharacterSwitch" value="Krystian" onchange="chooseCharacter(this)">
                 </td>
                 <td>
-                    <p>← Krystian</p>
+                    <p onclick="openDialog(this)" title="Krystian">← Krystian</p>
                 </td>
                 <td>
                     <input type="radio" name="selectCharacterSwitch" value="Szkolny laptop"
                         onchange="chooseCharacter(this)">
                 </td>
                 <td>
-                    <p>← Szkolny laptop</p>
+                    <p onclick="openDialog(this)" title="Szkolny laptop">← Szkolny laptop</p>
                 </td>
             </tr>
         </table>
+
+        <dialog id="characterSpecificationDialog">
+            <h2 id="characterName"></h2>
+            <section class="characterSpecificationWraper">
+                <div class="characterStatsWrapper">
+                    <p id="characterStats"></p>
+                </div>
+                <div>
+                    <p id="characterSpecification"></p>
+                </div>
+            </section>
+            <br>
+            <button onclick="closeDialog()">Zrozumiałem</button>
+        </dialog>
     </section>
 </body>
 
