@@ -1,6 +1,7 @@
 body 
 {
-    font-size: 1.3rem;
+    font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+    font-size: 1.5rem;
     height: 100vh;
     width: 100vw;
     margin: 0%;
@@ -43,7 +44,7 @@ body
     font-size: 2rem;
     text-align: center;
 }
-#goToGameButton, #gameBoard a
+#goToGameButton, #gameBoard a, .selectCharacterCard a, .selectCharacterCard button
 {
     text-align: center;
     letter-spacing: 0.3rem;
@@ -52,6 +53,8 @@ body
     text-decoration: none;
     color: black;
     text-align: center;
+    background: none;
+    border: none;
 }
 #characterSpecificationDialog
 {
@@ -70,18 +73,20 @@ body
 }
 #characterName
 {
-    width: 100%;
+    width: auto;
+    margin-top: 0px;
     text-align: center;
     height: 5vh;
 }
 #characterSpecification
 {
+    height: 100%;
     margin: 0%;
     font-size: 1.75rem;
 }
 .characterStatsWrapper
 {
-    width: 21vw;
+    width: 26vw;
     margin-right: 2.5vw;
     display: flex;
     flex-direction: column;
@@ -91,7 +96,7 @@ body
     height: 24vh;
     width: 100%;
 }
-.newCharacterButton, .loginButton, .characterSpecificationWraper
+.newCharacterButton, .loginButton, .characterSpecificationWraper, .selectCharacterCard a
 {
     display: flex;
     justify-content: center;
@@ -158,7 +163,23 @@ body
     display: flex;
     justify-content: center;
 }
-#goToGame, #gameBoard, #whatInterface, #characterSpecificationDialog, #characterSpecificationDialog button, .board, .fightState, .formWrapper, .selectCharacterCard, .selectCharacterPanel, .newCharacterButton, .loginButton
+.selectCharacterCard .newGameButton, .selectCharacterCard .loadGameButton, .selectCharacterCard .showAccountStatsButton
+{
+    margin: 4vh 2vh 4vh 2vh;
+}
+.newGameButton
+{
+    background-color: coral;
+}
+.loadGameButton
+{
+    background-color: darkturquoise;
+}
+.showAccountStatsButton
+{
+    background-color: gold;
+}
+#goToGame, #gameBoard, #whatInterface, #characterSpecificationDialog, #characterSpecificationDialog button, .board, .fightState, .formWrapper, .newGameButton, .loadGameButton, .showAccountStatsButton, .selectCharacterCard, .selectCharacterPanel, .newCharacterButton, .loginButton
 {
     padding: 15px;
     border-radius: 15px;

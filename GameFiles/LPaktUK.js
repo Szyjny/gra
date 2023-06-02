@@ -8,6 +8,13 @@ onload = () =>
     console.log(playerCharacter)
     playerCharacter.attack()
 
+    // for (const parm in playerCharacter) {
+    //     if (playerCharacter.hasOwnProperty.call(playerCharacter, parm)) {
+    //         const element = playerCharacter[parm];
+    //         console.log(parm + " : " + element);
+    //     }
+    // }
+
     // if (summoners.length)
     //     console.log("jest");
     // else
@@ -212,13 +219,17 @@ class EnemyCharacter extends Fighter
                 this.evolutionMutagens = ["bleed", "crit"]
                 break;
             case "Szymon Hitman":
-                super(1000, 100, 1000, level) //FIXME:
-                this.weapon = "Usp-s"
+                super(650, 100, 5, level)
+                this.weapon = true
+                this.weaponUsed = "Usp-s"
                 this.ammo = 3
+                this.dodged = true
+                this.dodgedChance = 0.1
                 break;
             case "Szymon Oiginal":
-                super(220, playerCharacter.maxHp * 0.1, -5, 350) //FIXME:
-                this.weapon = "Awp"
+                super(220, playerCharacter.maxHp * 0.1, -5, 350)
+                this.weapon = true
+                this.weaponUsed = "Awp"
                 this.ammo = 1
                 break;
         }
@@ -314,7 +325,7 @@ let
 //#region variables in fight
 
 let
-    turn = 1;
+    turn = 1; //będzie podmianka na "console.count(label)"
 
 //#endregion
 
@@ -347,7 +358,7 @@ function chooseCharacter(character)
     console.log(playerCharacter)
 }
 
-function openDialog(character)
+function openSelectCharacterDialog(character)
 {
     let dialog = document.getElementById("characterSpecificationDialog")
     let characterName = document.getElementById("characterName")
@@ -390,7 +401,7 @@ function openDialog(character)
     dialog.showModal()
 }
 
-function closeDialog()
+function closeSelectCharacterDialog()
 {
     let dialog = document.getElementById("characterSpecificationDialog")
     dialog.close()
