@@ -42,13 +42,15 @@ class Fighter
         this.maxAd = Math.ceil((this.baseAd * 0.05 * level) + this.baseAd)
         this.Ad = this.maxAd
 
+        this.baseArmor = characterBaseArmor
+        this.armor = this.baseArmor
+
         this.level = level
         this.exp = 0
         this.neededExp = Math.floor(50 * this.level * 0.25 + 100)
         //lvl 0 -> 100 | level 1 -> 112 | level 5 -> 162 | level 10 -> 225
 
-        this.baseArmor = characterBaseArmor
-        this.armor = this.baseArmor
+        this.bleedStacks = 0
     }
 
     //#region attack & his components
@@ -155,7 +157,6 @@ class PlayerCharacter extends Fighter
                 super(800, 90, 10, lvl)
                 this.ram = true
                 this.ramCooldown = 4
-                this.bleedStacks = 0
                 this.bleedStackAD = 5
                 this.eat = true
                 this.eatCooldown = 10
@@ -211,13 +212,14 @@ class EnemyCharacter extends Fighter
                 this.evolutionMutagens = ["bleed", "crit"]
                 break;
             case "Szymon Hitman":
-                super(1000, 1000, 1000, level) //FIXME:
-                this.theft = true
+                super(1000, 100, 1000, level) //FIXME:
+                this.weapon = "Usp-s"
+                this.ammo = 3
                 break;
             case "Szymon Oiginal":
-                super(220, 1000, 1000, 350) //FIXME:
+                super(220, playerCharacter.maxHp * 0.1, -5, 350) //FIXME:
                 this.weapon = "Awp"
-                this.Ad = playerCharacter.maxHp * 0.2
+                this.ammo = 1
                 break;
         }
 
