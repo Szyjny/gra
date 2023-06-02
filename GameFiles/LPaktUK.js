@@ -35,11 +35,11 @@ class Fighter
     constructor(characterBaseHp, characterBaseAd, characterBaseArmor, level)
     {
         this.baseHp = characterBaseHp
-        this.maxHp = (this.baseHp * 0.05) * level + this.baseHp
+        this.maxHp = Math.ceil((this.baseHp * 0.05 * level) + this.baseHp)
         this.hp = this.maxHp
 
         this.baseAd = characterBaseAd
-        this.maxAd = this.baseAd
+        this.maxAd = Math.ceil((this.baseAd * 0.05 * level) + this.baseAd)
         this.Ad = this.maxAd
 
         this.level = level
@@ -215,8 +215,9 @@ class EnemyCharacter extends Fighter
                 this.theft = true
                 break;
             case "Szymon Oiginal":
-                super(1000, 1000, 1000, level) //FIXME:
-                this.theft = true
+                super(220, 1000, 1000, 350) //FIXME:
+                this.weapon = "Awp"
+                this.Ad = playerCharacter.maxHp * 0.2
                 break;
         }
 
@@ -295,7 +296,7 @@ let
     playerCharacter,
     enemyCharacter,
     playerSummoners = ["maslo"]
-enemySummoners = ["sraka"]
+    enemySummoners = ["sraka"]
 
 //#endregion
 
@@ -317,7 +318,7 @@ let
 
 //#region static variables
 
-const enemyList = ["Szymon Asasyn", "Szymon Artysta", "Szymon Hitman"]
+const enemyList = ["Szymon Asasyn", "Szymon Artysta", "Szymon Hitman", "Szymon Oiginal"]
 
 //#endregion
 
@@ -438,6 +439,7 @@ function genNextStage()
         enemyCharacter = new EnemyCharacter(character, enemyLvl)
 
         console.log(`${enemyCharacter.character} z poziomem ${enemyCharacter.level}`);
+        console.log(enemyCharacter);
     }
 }
 
