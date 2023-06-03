@@ -309,7 +309,7 @@ let
     playerCharacter,
     enemyCharacter,
     playerSummoners = ["maslo"]
-    enemySummoners = ["sraka"]
+enemySummoners = ["sraka"]
 
 //#endregion
 
@@ -356,55 +356,6 @@ function chooseCharacter(character)
     localStorage.setItem("character", character.value);
 
     console.log(playerCharacter)
-}
-
-function openSelectCharacterDialog(character)
-{
-    let dialog = document.getElementById("characterSpecificationDialog")
-    let characterName = document.getElementById("characterName")
-    let characterStats = document.getElementById("characterStats")
-    let characterSpecification = document.getElementById("characterSpecification")
-
-    let manekin = new PlayerCharacter(character.title, 0)
-
-    console.log(manekin);
-
-    characterName.innerHTML = manekin.character
-    characterStats.innerHTML = ` hp - ${manekin.hp}<br> ad - ${manekin.Ad}<br> armor - ${manekin.armor}`
-
-    switch (character.title)
-    {
-        case "Sagan":
-            console.log("yes sanaga");
-            characterSpecification.innerHTML = `Jest to posatać potrafiąca "pożyczać przedmioty bez pozwolenia", może to wykonywać co ${manekin.theftCooldown} tur`
-            break
-        case "Czupryńska":
-            console.log("log yes czupa");
-            characterSpecification.innerHTML = `Jest to postać która przez tureta posiada ${manekin.berserkerActivateChance * 100}% na wykonanie kolejnego ataku oraz ${manekin.randomCritChance * 100}% na wykonanie ciosu krytycznego`
-            break
-        case "Bejrowicz":
-            characterSpecification.innerHTML = `Jest to postać która przywoływuje "${manekin.summoners}", za każdą żyjącą przywołaną postać dostaje buffy do statystyk bazowych`
-            break
-        case "Dolega":
-            characterSpecification.innerHTML = `Jest to postać która posiada krzyk bojawy dzięki któremu staję się prawdziwym gorylem`
-            break
-        case "Krystian":
-            characterSpecification.innerHTML = `Jest to postać wykonująca taran co ${manekin.ramCooldown} tur, który stunuje oraz nakłada krwawienie na okonenta (${manekin.bleedStackAD}dmg per stack) oraz co ${manekin.eatCooldown} tur zjada "${manekin.food}"`
-            break
-        case "Szkolny laptop":
-            characterSpecification.innerHTML = `Jest to sprzęt który nakłada debufy a sam nic nie zadaje obrażeń, za niego to robią jego przywołańce "${manekin.summoners}"`
-            break
-        default:
-            console.log("sraka nie działa");
-    }
-
-    dialog.showModal()
-}
-
-function closeSelectCharacterDialog()
-{
-    let dialog = document.getElementById("characterSpecificationDialog")
-    dialog.close()
 }
 
 //#endregion
@@ -487,6 +438,72 @@ function openTestingGround()
 
         mainScene.append(addLvlBtn, newEnemy, nextStage, earlierStage)
     }
+}
+
+
+//#endregion
+
+//#region dialogs
+
+function openSelectCharacterDialog(character)
+{
+    let dialog = document.getElementById("characterSpecificationDialog")
+    let characterName = document.getElementById("characterName")
+    let characterStats = document.getElementById("characterStats")
+    let characterSpecification = document.getElementById("characterSpecification")
+
+    let manekin = new PlayerCharacter(character.title, 0)
+
+    console.log(manekin);
+
+    characterName.innerHTML = manekin.character
+    characterStats.innerHTML = ` hp - ${manekin.hp}<br> ad - ${manekin.Ad}<br> armor - ${manekin.armor}`
+
+    switch (character.title)
+    {
+        case "Sagan":
+            console.log("yes sanaga");
+            characterSpecification.innerHTML = `Jest to posatać potrafiąca "pożyczać przedmioty bez pozwolenia", może to wykonywać co ${manekin.theftCooldown} tur`
+            break
+        case "Czupryńska":
+            console.log("log yes czupa");
+            characterSpecification.innerHTML = `Jest to postać która przez tureta posiada ${manekin.berserkerActivateChance * 100}% na wykonanie kolejnego ataku oraz ${manekin.randomCritChance * 100}% na wykonanie ciosu krytycznego`
+            break
+        case "Bejrowicz":
+            characterSpecification.innerHTML = `Jest to postać która przywoływuje "${manekin.summoners}", za każdą żyjącą przywołaną postać dostaje buffy do statystyk bazowych`
+            break
+        case "Dolega":
+            characterSpecification.innerHTML = `Jest to postać która posiada krzyk bojawy dzięki któremu staję się prawdziwym gorylem`
+            break
+        case "Krystian":
+            characterSpecification.innerHTML = `Jest to postać wykonująca taran co ${manekin.ramCooldown} tur, który stunuje oraz nakłada krwawienie na okonenta (${manekin.bleedStackAD}dmg per stack) oraz co ${manekin.eatCooldown} tur zjada "${manekin.food}"`
+            break
+        case "Szkolny laptop":
+            characterSpecification.innerHTML = `Jest to sprzęt który nakłada debufy a sam nic nie zadaje obrażeń, za niego to robią jego przywołańce "${manekin.summoners}"`
+            break
+        default:
+            console.log("sraka nie działa");
+    }
+
+    dialog.showModal()
+}
+
+function closeSelectCharacterDialog()
+{
+    let dialog = document.getElementById("characterSpecificationDialog")
+    dialog.close()
+}
+
+function openAccountStatsDialog()
+{
+    let showAccountStats = document.getElementById("showAccountStats")
+    showAccountStats.showModal()
+}
+
+function closeAccountStatsDialog()
+{
+    let showAccountStats = document.getElementById("showAccountStats")
+    showAccountStats.close()
 }
 
 //#endregion

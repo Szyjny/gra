@@ -11,6 +11,14 @@ body
     overflow: hidden;
     background: linear-gradient(to left bottom, rgb(255, 80, 80) 0%, rgb(80, 80, 255) 100%);
 }
+dialog::backdrop
+{
+    background-color: rgba(0, 0, 0, 0.3);
+}
+.pointer
+{
+    cursor: pointer;
+}
 .formWrapper
 {
     background: linear-gradient(to left bottom, rgb(110, 255, 20) 0%, rgb(246, 255, 75) 100%);
@@ -21,7 +29,7 @@ body
 }
 .selectCharacterPanel
 {
-    background: linear-gradient(to top, white 0%, rgb(167, 167, 167) 100%);
+    background: linear-gradient(to top, white 0%, rgb(228, 228, 228) 100%);
     gap: 100px;
 }
 .selectCharacterPanel td 
@@ -86,10 +94,11 @@ body
 }
 .characterStatsWrapper
 {
-    width: 26vw;
+    width: 30.52vw;
     margin-right: 2.5vw;
     display: flex;
     flex-direction: column;
+    text-align: center;
 }
 .characterSpecificationWraper
 {
@@ -179,7 +188,15 @@ body
 {
     background-color: gold;
 }
-#goToGame, #gameBoard, #whatInterface, #characterSpecificationDialog, #characterSpecificationDialog button, .board, .fightState, .formWrapper, .newGameButton, .loadGameButton, .showAccountStatsButton, .selectCharacterCard, .selectCharacterPanel, .newCharacterButton, .loginButton
+#showAccountStats
+{
+    background: linear-gradient(to left bottom, rgb(255, 93, 34) 0%, rgb(193, 105, 255) 100%)
+}
+#closeAccountStatsDialog
+{
+    background-color: darkseagreen;
+}
+dialog, #goToGame, #gameBoard, #whatInterface, #characterSpecificationDialog button, #closeAccountStatsDialog, .board, .fightState, .formWrapper, .newGameButton, .loadGameButton, .showAccountStatsButton, .selectCharacterCard, .selectCharacterPanel, .newCharacterButton, .loginButton
 {
     padding: 15px;
     border-radius: 15px;
