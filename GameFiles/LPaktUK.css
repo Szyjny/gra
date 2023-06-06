@@ -11,6 +11,14 @@ body
     overflow: hidden;
     background: linear-gradient(to left bottom, rgb(255, 80, 80) 0%, rgb(80, 80, 255) 100%);
 }
+form input
+{
+    width: 98%;
+    padding: 5px;
+    border-radius: 10px;
+    border: none;
+    box-shadow: 1px 1px 1px;
+}
 dialog::backdrop
 {
     background-color: rgba(0, 0, 0, 0.3);
@@ -194,7 +202,13 @@ dialog::backdrop
 }
 #closeAccountStatsDialog
 {
-    background-color: darkseagreen;
+    background-color: white;
+}
+#adwentureHistory
+{
+    height: 47vh;
+    width: 100%;
+    overflow-wrap: break-word;
 }
 dialog, #goToGame, #gameBoard, #whatInterface, #characterSpecificationDialog button, #closeAccountStatsDialog, .board, .fightState, .formWrapper, .newGameButton, .loadGameButton, .showAccountStatsButton, .selectCharacterCard, .selectCharacterPanel, .newCharacterButton, .loginButton
 {
@@ -202,4 +216,21 @@ dialog, #goToGame, #gameBoard, #whatInterface, #characterSpecificationDialog but
     border-radius: 15px;
     border: none;
     box-shadow: 1px 1px 1px;
+}
+#adwentureHistory {
+  overflow: hidden;
+  overflow-y: scroll;
+  scrollbar-width: thin;
+  scrollbar-color: #ffffff transparent;
+}
+#adwentureHistory::-webkit-scrollbar 
+{
+  width: 8px;
+}
+#adwentureHistory::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+#adwentureHistory::-webkit-scrollbar-thumb {
+  background-color: #ffffff;
+  border-radius: 10px;
 }

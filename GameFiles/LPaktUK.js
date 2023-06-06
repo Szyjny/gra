@@ -73,7 +73,14 @@ class Fighter
     }
     #effectBleed()
     {
-        //TODO:
+        if (turn % 2)
+        {
+            playerCharacter.hp -= enemyCharacter.bleedStackAD * playerCharacter.bleedStacks
+        }
+        else
+        {
+            enemyCharacter.hp -= playerCharacter.bleedStackAD * enemyCharacter.bleedStacks
+        }
     }
     #effectWeak()
     {
@@ -91,21 +98,86 @@ class Fighter
     {
         //TODO:
     }
-    #effectCrit()
+    #effectCrit(hit)
     {
         //TODO:
+        if (turn % 2)
+        {
+            if (Math.random() <= playerCharacter.randomCritChance)
+            {
+                return hit *= 2
+            }
+            return hit
+        }
+        else
+        {
+            if (Math.random() <= enemyCharacter.randomCritChance)
+            {
+                return hit *= 2
+            }
+            return hit
+        }
     }
     #effectDodged()
     {
-        //TODO:
+        if (turn % 2)
+        {
+            if (Math.random() <= playerCharacter.dodgedChance)
+            {
+                return true
+            }
+            return false
+        }
+        else
+        {
+            if (Math.random() <= enemyCharacter.dodgedChance)
+            {
+                return true
+            }
+            return false
+        }
     }
     #effectBerserk() 
     {
-        //TODO:
+        if (turn % 2)
+        {
+            if (Math.random() <= playerCharacter.berserkerActivateChance)
+            {
+                return playerCharacter.attack()
+            }
+        }
+        else
+        {
+            if (Math.random() <= enemyCharacter.berserkerActivateChance)
+            {
+                return enemyCharacter.attack()
+            }
+        }
     }
     #eat()
     {
-        //TODO:
+        if (turn % 2)
+        {
+            const FOOD_INDEX = Math.floor(Math.random() * playerCharacter.food.length)
+
+            switch (playerCharacter.food[FOOD_INDEX])
+            {
+                case 'Pizzerka':
+                    playerCharacter += playerCharacter.maxHp * 0.20
+                    break
+            }
+        }
+        else
+        {
+            const FOOD_INDEX = Math.floor(Math.random() * enemyCharacter.food.length)
+            
+            switch (enemyCharacter.food[FOOD_INDEX])
+            {
+                case 'Pizzerka':
+                    enemyCharacter += enemyCharacter.maxHp * 0.20
+                    break
+            }
+        }
     }
     #reloadGun()
     {
@@ -117,15 +189,35 @@ class Fighter
     }
     #buffStatsOverTime()
     {
-        //TODO:
+        if (turn % 2)
+        {
+            playerCharacter.hp += playerCharacter.buffStatsOverTimeHp
+            playerCharacter.ad += playerCharacter.buffStatsOverTimeAd
+            playerCharacter.armor += playerCharacter.buffStatsOverTimeArmor
+        }
+        else
+        {
+            enemyCharacter.hp += enemyCharacter.buffStatsOverTimeHp
+            enemyCharacter.ad += enemyCharacter.buffStatsOverTimeAd
+            enemyCharacter.armor += enemyCharacter.buffStatsOverTimeArmor
+        }
     }
     #ram()
     {
         //TODO:
     }
-    #summon(summonedCharacter)
+    #summon()
     {
-        //TODO:
+        if (turn % 2)
+        {
+            const SUMMONED_CHARACTER_INDEX = Math.floor(Math.random() * playerCharacter.summoners.length)
+            playerSummoners += new SummonersCharacter(playerCharacter.summoners[SUMMONED_CHARACTER_INDEX])
+        }
+        else
+        {
+            const SUMMONED_CHARACTER_INDEX = Math.floor(Math.random() * enemyCharacter.summoners.length)
+            enemySummoners += new SummonersCharacter(enemyCharacter.summoners[SUMMONED_CHARACTER_INDEX])
+        }
     }
     //TODO: dodaj sternicką co będzie dawała efekt tygodnia
 
