@@ -100,7 +100,6 @@ class Fighter
     }
     #effectCrit(hit)
     {
-        //TODO:
         if (turn % 2)
         {
             if (Math.random() <= playerCharacter.randomCritChance)
@@ -170,7 +169,7 @@ class Fighter
         else
         {
             const FOOD_INDEX = Math.floor(Math.random() * enemyCharacter.food.length)
-            
+
             switch (enemyCharacter.food[FOOD_INDEX])
             {
                 case 'Pizzerka':
@@ -200,6 +199,38 @@ class Fighter
             enemyCharacter.hp += enemyCharacter.buffStatsOverTimeHp
             enemyCharacter.ad += enemyCharacter.buffStatsOverTimeAd
             enemyCharacter.armor += enemyCharacter.buffStatsOverTimeArmor
+        }
+    }
+    #mutagen()
+    {
+        if (turn % 2)
+        {
+            if ((turn % 2) % playerCharacter.evolutionNeedTurns)
+            {
+                addMutagens(playerCharacter.evolutionMutagens[playerCharacter.evolutionStage])
+            }
+        }
+        else
+        {
+            if ((turn % 2) % enemyCharacter.evolutionNeedTurns)
+            {
+                addMutagens(enemyCharacter.evolutionMutagens[enemyCharacter.evolutionStage])
+            }
+        }
+
+        addMutagens(mutagenName)
+        {
+            switch (mutagenName)
+            {
+                case 'bleed':
+                    this.randomCrit = true
+                    this.randomCritChance = 0.10
+                    break
+                case 'crit':
+                    this.bleed = true
+                    this.bleedStackAD = 5
+                    break
+            }
         }
     }
     #ram()

@@ -210,7 +210,14 @@ dialog::backdrop
     width: 100%;
     overflow-wrap: break-word;
 }
-dialog, #goToGame, #gameBoard, #whatInterface, #characterSpecificationDialog button, #closeAccountStatsDialog, .board, .fightState, .formWrapper, .newGameButton, .loadGameButton, .showAccountStatsButton, .selectCharacterCard, .selectCharacterPanel, .newCharacterButton, .loginButton
+.submit
+{
+    width: 100.5%;
+    letter-spacing: 0.2rem;
+    font-weight: bold;
+    font-size: 1.5rem;
+}
+dialog, #goToGame, #gameBoard, #whatInterface, #characterSpecificationDialog button, #closeAccountStatsDialog, .board, .fightState, .formWrapper, .newGameButton, .loadGameButton, .showAccountStatsButton, .submit, .selectCharacterCard, .selectCharacterPanel, .newCharacterButton, .loginButton
 {
     padding: 15px;
     border-radius: 15px;
