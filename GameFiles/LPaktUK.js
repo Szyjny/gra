@@ -1,12 +1,17 @@
-////////////////////////////////////// TEST LINES ////////////////////////////////////// yes
+////////////////////////////////////// TEST LINES //////////////////////////////////////
 
 onload = () =>
 {
     console.log("start")
+    console.log("rak");
 
     playerCharacter = new PlayerCharacter(localStorage.getItem("character"), 0);
     console.log(playerCharacter)
-    playerCharacter.attack()
+
+    // const audio = new Audio("/SFX/SaganDie.mp3")
+    // audio.play()
+
+    // playerCharacter.attack()
 
     // for (const parm in playerCharacter) {
     //     if (playerCharacter.hasOwnProperty.call(playerCharacter, parm)) {
@@ -57,6 +62,7 @@ class Fighter
         this.neededExp = Math.floor(50 * this.level * 0.25 + 100)
         //lvl 0 -> 100 | level 1 -> 112 | level 5 -> 162 | level 10 -> 225
 
+        this.activePassiveEffects = true
         this.bleedStacks = 0
     }
 
@@ -65,7 +71,63 @@ class Fighter
     attack()
     {
         //TODO:
-        console.log("yeyey");
+        if (turn % 2)
+        {
+            let hit = Math.ceil(Math.random() * playerCharacter.Ad)
+            console.log(`Enamy hit: ${hit}ad`)
+
+            if (playerCharacter.activePassiveEffects)
+            {
+                if (playerCharacter.bleedStacks)
+                {
+                    let bleedHit = enemyCharacter.bleedStackAD * playerCharacter.bleedStacks
+                    console.log(`bleed dmg to player: ${bleedHit} : ${playerCharacter.bleedStacks}`);
+                    playerCharacter.hp -= bleedHit
+                }
+            }
+
+            if (playerCharacter.bleed)
+            {
+                this.#effectBleed()
+            }
+
+            addElement(`Enemy hp => ${enemyCharacter.hp} - ${hit} = ${enemyCharacter.hp - hit}`)
+
+            playerCharacter.SFX.playSound(playerCharacter.SFX.atack, NORMAL_VOLUME, false)
+            enemyCharacter.SFX.playSound(enemyCharacter.SFX.hurtSound, QUITER_VOLUME, false)
+
+            enemyCharacter.hp -= hit
+        }
+        else
+        {
+            let hit = Math.floor(Math.random() * enemyCharacter.Ad)
+            console.log(`Enamy hit: ${hit}ad`)
+
+
+            if (enemyCharacter.activePassiveEffects)
+            {
+                if (enemyCharacter.bleedStacks)
+                {
+                    let bleedHit = playerCharacter.bleedStackAD * enemyCharacter.bleedStacks
+                    console.log(`bleed dmg to enemy: ${bleedHit} : ${enemyCharacter.bleedStacks}`);
+                    enemyCharacter.hp -= bleedHit
+                }
+            }
+
+            if (enemyCharacter.bleed)
+            {
+                this.#effectBleed()
+            }
+
+            addElement(`Player hp => ${playerCharacter.hp} - ${hit} = ${playerCharacter.hp - hit}`)
+
+            enemyCharacter.SFX.playSound(enemyCharacter.SFX.atack, NORMAL_VOLUME, false)
+            playerCharacter.SFX.playSound(playerCharacter.SFX.hurtSound, QUITER_VOLUME, false)
+
+            playerCharacter.hp -= hit
+        }
+
+        console.log(`Player hp: ${playerCharacter.hp}\nEnamy hp: ${enemyCharacter.hp}`);
     }
     #effectStun()
     {
@@ -75,11 +137,19 @@ class Fighter
     {
         if (turn % 2)
         {
-            playerCharacter.hp -= enemyCharacter.bleedStackAD * playerCharacter.bleedStacks
+            if (playerCharacter.bleed)
+            {
+                enemyCharacter.bleedStacks++
+                addElement(`Enemy bleed stacks: ${enemyCharacter.bleedStacks}`)
+            }
         }
         else
         {
-            enemyCharacter.hp -= playerCharacter.bleedStackAD * enemyCharacter.bleedStacks
+            if (enemyCharacter.bleed)
+            {
+                playerCharacter.bleedStacks++
+                addElement(`Player bleed stacks: ${playerCharacter.bleedStacks}`)
+            }
         }
     }
     #effectWeak()
@@ -142,6 +212,7 @@ class Fighter
         {
             if (Math.random() <= playerCharacter.berserkerActivateChance)
             {
+                playerCharacter.activePassiveEffects = false
                 return playerCharacter.attack()
             }
         }
@@ -149,6 +220,7 @@ class Fighter
         {
             if (Math.random() <= enemyCharacter.berserkerActivateChance)
             {
+                enemyCharacter.activePassiveEffects = false
                 return enemyCharacter.attack()
             }
         }
@@ -265,6 +337,8 @@ class PlayerCharacter extends Fighter
                 super(1000, 100, 5, lvl)
                 this.theft = true
                 this.theftCooldown = 5
+                this.bleed = true
+                this.bleedStackAD = 5
                 break;
             case "Czupryńska":
                 super(750, 75, 15, lvl)
@@ -303,10 +377,7 @@ class PlayerCharacter extends Fighter
 
         this.character = character
 
-        this.SFX = new createSFX(character)
-
-        // no i będą odwołania w stylu
-        // playerCharacter.SFX.win()
+        this.SFX = new createSFX(character, "player")
     }
     showGear()
     {
@@ -350,7 +421,7 @@ class EnemyCharacter extends Fighter
                 this.dodgedChance = 0.1
                 break;
             case "Szymon Oiginal":
-                super(220, playerCharacter.maxHp * 0.1, -5, 350)
+                super(220, 0, -5, 350)
                 this.weapon = true
                 this.weaponUsed = "Awp"
                 this.ammo = 1
@@ -358,6 +429,8 @@ class EnemyCharacter extends Fighter
         }
 
         this.character = character
+
+        this.SFX = new createSFX(character, "enemy")
     }
 }
 
@@ -374,6 +447,8 @@ class SummonersCharacter extends Fighter
                 super(250, 30, 0, 0)
                 break;
         }
+
+        this.SFX = new createSFX(character, "summoner")
     }
 }
 
@@ -405,19 +480,117 @@ class Equipment
 
 class createSFX
 {
-    constructor(character)
+    constructor(character, who)
     {
-        switch (character)
+        if (who == "player")
         {
-            case "Sagan":
-                // np   this.win = "src do pliku dzwiękowego z dzwiękiem zwycięstwa"
-                break
+            switch (character)
+            {
+                case "Sagan":
+                    this.atack = `/SFX/Sagan/SaganAtack.mp3`
+                    this.hurtSound = `/SFX/Sagan/SaganTakingDamage.mp3`
+                    this.win = '/SFX/Sagan/SaganWin.mp3'
+                    this.rip = '/SFX/Sagan/SaganDie.mp3'
+                    this.theft = '/SFX/Sagan/SaganStealing.mp3'
+                    break
+                case "Bejrowicz":
+                    this.atack = `/SFX/Benger/BengerAtack.mp3`
+                    this.hurtSound = `/SFX/Benger/BengerTakingDMG.mp3`
+                    this.win = '/SFX/Benger/BengerWin.mp3'
+                    this.rip = '/SFX/Benger/BengerDies.mp3'
+                    this.summon = '/SFX/Benger/BengerSummon.mp3'
+                    break
+                case "Czupryńska":
+                    this.atack = `/SFX/Czupryńska/CzupKrzyk.mp3`
+                    this.hurtSound = `/SFX/Czupryńska/CzupTakingDamage.mp3`
+                    this.win = '/SFX/Czupryńska/CzupWin.mp3'
+                    this.rip = '/SFX/Czupryńska/CzupDeath.mp3'
+                    this.berserke = `/SFX/Czupryńska/CzupAnotherAtack.mp3`
+                    this.crit = '/SFX/Czupryńska/CzupCrit.mp3'
+                    break
+                case "Dolega":
+                    this.atack = `/SFX/Dolega/DolegaAtack.mp3`
+                    this.hurtSound = `/SFX/Dolega/DolegaTakingDMG.mp3`
+                    this.win = '/SFX/Dolega/DolegaWin.mp3'
+                    this.rip = '/SFX/Dolega/DolegaDies.mp3'
+                    this.warShout = '/SFX/Dolega/DolegaWarShout.mp3'
+                    break
+                case "Krystian":
+                    this.atack = `/SFX/Krystian/krystianAtack.mp3`
+                    this.hurtSound = `/SFX/Krystian/KrystaintakingDamage.mp3`
+                    this.win = '/SFX/Krystian/KrystianWin.mp3'
+                    this.rip = '/SFX/Krystian/KrystianDies.mp3'
+                    this.ram = '/SFX/Krystian/KrystainRam.mp3'
+                    this.eat = '/SFX/Krystian/KrystianEating.mp3'
+                    break
+                case "Szkolny laptop":
+                    this.atack = `/SFX/Laptop/LaptopAtack.mp3`
+                    this.hurtSound = `/SFX/Laptop/LaptopTakingDamage.mp3`
+                    this.win = '/SFX/Laptop/LaptopWin.mp3'
+                    this.rip = '/SFX/Laptop/LaptopDeath.mp3'
+                    this.summon = '/SFX/Laptop/LaptopProgramists.mp3'
+                    break
+            }
+        }
+        else if (who == "enemy")
+        {
+            switch (character)
+            {
+                case "Szymon Asasyn":
+                    this.atack = `/SFX/SzymonAssasyn/AssasinAtack.mp3`
+                    this.hurtSound = `/SFX/SzymonAssasyn/AssasintakingDMG.mp3`
+                    this.win = '/SFX/SzymonAssasyn/AssasinWin.mp3'
+                    this.rip = '/SFX/SzymonAssasyn/AssasinDies.mp3'
+                    this.stun = '/SFX/SzymonAssasyn/AssasinDzwignia.mp3'
+                    break
+                case "Szymon Artysta":
+                    this.atack = `/SFX/SzymonArtist/SzymonArtistAtack.mp3`
+                    this.hurtSound = `/SFX/SzymonArtist/SzymonArtistTakingDMG.mp3`
+                    this.win = '/SFX/SzymonArtist/SzymonArtistWin.mp3'
+                    this.rip = '/SFX/SzymonArtist/SzymonArtistRIP.mp3'
+                    this.buffStatsOverTime = '/SFX/SzymonArtist/SzymonArtistBuff.mp3'
+                    break
+                case "Szymon Hitman":
+                    this.atack = `/SFX/SzymonHitman/HitmanSzymonAtack.mp3`
+                    this.hurtSound = `/SFX/SzymonHitman/SzymonHitmanTakingDMG.mp3`
+                    this.win = '/SFX/SzymonHitman/SzymonHitmanWin.mp3'
+                    this.rip = '/SFX/SzymonHitman/SzymonHitmanDie.mp3'
+                    this.reloadGun = '/SFX/SzymonHitman/HitmanSzymonReload.mp3'
+                    this.dodge = '/SFX/SzymonHitman/HitmanSzymonDodge.mp3'
+                    break
+                case "Szymon Oiginal":
+                    this.atack = `/SFX/Szymon/SzymonAtack.mp3`
+                    this.hurtSound = `/SFX/Szymon/SzymonTakingDMG.mp3`
+                    this.win = '/SFX/Szymon/SzymonWin.mp3'
+                    this.rip = '/SFX/Szymon/SzymonDies.mp3'
+                    this.broke = '/SFX/Szymon/SzymonŁamanie.mp3'
+                    break
+            }
+        }
+        else
+        {
+            switch (character) 
+            {
+                case "Ekonimistka":
+                    this.atack = `/SFX/Summoners/EkonomistkiAtack.mp3`
+                    this.hurtSound = `/SFX/Summoners/EkonomistkiDies.mp3`
+                    break
+                case "Rozjuszony programista":
+                    this.atack = `/SFX/Summoners/ProgramisciAtack.mp3`
+                    this.hurtSound = `/SFX/Summoners/ProgramisciDies.mp3`
+                    break
+            }
         }
     }
 
-    win()
+    playSound(soundSrc, volume, loopStatus)
     {
         // podmienia src i uruchamia audio
+        let audio = new Audio(soundSrc)
+        audio.loop = loopStatus
+        audio.volume = volume
+
+        audio.play()
     }
 
 }
@@ -455,6 +628,10 @@ let
 //#region static variables
 
 const enemyList = ["Szymon Asasyn", "Szymon Artysta", "Szymon Hitman", "Szymon Oiginal"]
+const
+    NORMAL_VOLUME = 1,
+    QUITER_VOLUME = 0.67,
+    QUIET_VOLUME = 0.34
 
 //#endregion
 
@@ -489,32 +666,50 @@ function fight()
 {
     let autoPlay = setInterval(() =>
     {
+        console.log(`------- tura: ${turn} -------\n`)
+
         if (turn % 2)
         {
-            enemyCharacter.attack()
-            console.log("przeciwnik zaatakował")
+            playerCharacter.attack()
+            console.log("gracz zaatakował")
+            addElement(`🪖 tura gracza ${turn} 🪖`)
         }
         else
         {
-            playerCharacter.attack()
+            enemyCharacter.attack()
+            console.log("enemy zaatakował");
+            addElement(`🪖 tura enemy ${turn} 🪖`)
         }
 
         if (playerCharacter.hp < 1)
         {
             console.log("gracz zmarł")
+
+            enemyCharacter.SFX.playSound(enemyCharacter.SFX.win, NORMAL_VOLUME, false)
+            playerCharacter.SFX.playSound(playerCharacter.SFX.rip, QUITER_VOLUME, false)
+
+            addElement(`⛔ END FIGHT 😵`)
             clearInterval(autoPlay)
         }
-        else if (playerCharacter.hp < 1)
+        else if (enemyCharacter.hp < 1)
         {
             console.log("oponent zmarł");
+
+            playerCharacter.SFX.playSound(playerCharacter.SFX.win, QUITER_VOLUME, false)
+            enemyCharacter.SFX.playSound(enemyCharacter.SFX.rip, QUITER_VOLUME, false)
+
+            addElement(`🏆 END FIGHT 🥊`)
             clearInterval(autoPlay)
         }
-    }, 1500)
+
+
+        turn++
+    }, 1750)
 }
 
 function addLevel()
 {
-    console.log("srasz?");
+    console.log("widzisz mnie?");
 }
 
 function genNextStage()
@@ -530,6 +725,15 @@ function genNextStage()
     }
 }
 
+function addElement(text)
+{
+    const adwentureHistoryWrapper = document.getElementById("adwentureHistory")
+    const addedHistory = document.createElement("p")
+
+    addedHistory.innerHTML = text
+    adwentureHistoryWrapper.insertBefore(addedHistory, adwentureHistoryWrapper.firstChild)
+}
+
 //#endregion
 
 //#region create testing area for game
@@ -540,6 +744,9 @@ function openTestingGround()
 
     if (passCheck == "woda")
     {
+        const audio = new Audio("/SFX/Sagan/SaganDie.mp3")
+        audio.play()
+
         const mainScene = document.getElementById("mainScene")
         mainScene.innerHTML = ""
 
@@ -559,7 +766,13 @@ function openTestingGround()
         earlierStage.innerHTML = "poprzedni stage"
         earlierStage.onclick = () => { console.log(--stage) }
 
-        mainScene.append(addLvlBtn, newEnemy, nextStage, earlierStage)
+        const testingFight = document.createElement("button")
+        testingFight.innerHTML = "testowa walka"
+        testingFight.onclick = () => { genNextStage(); fight() }
+
+
+
+        mainScene.append(addLvlBtn, newEnemy, nextStage, earlierStage, testingFight)
     }
 }
 

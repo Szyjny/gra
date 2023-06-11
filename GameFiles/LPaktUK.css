@@ -113,7 +113,7 @@ dialog::backdrop
     height: 24vh;
     width: 100%;
 }
-.newCharacterButton, .loginButton, .characterSpecificationWraper, .selectCharacterCard a
+.newCharacterButton, .loginButton, .characterSpecificationWraper, .selectCharacterCard a, #fightHistory h3, #fightHistory #adwentureHistory p
 {
     display: flex;
     justify-content: center;
@@ -241,3 +241,4 @@ dialog, #goToGame, #gameBoard, #whatInterface, #characterSpecificationDialog but
   background-color: #ffffff;
   border-radius: 10px;
 }
+
