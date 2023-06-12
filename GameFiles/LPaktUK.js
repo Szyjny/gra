@@ -7,31 +7,9 @@ onload = () =>
 
     playerCharacter = new PlayerCharacter(localStorage.getItem("character"), 0);
     console.log(playerCharacter)
-
-    // const audio = new Audio("/SFX/SaganDie.mp3")
-    // audio.play()
-
-    // playerCharacter.attack()
-
-    // for (const parm in playerCharacter) {
-    //     if (playerCharacter.hasOwnProperty.call(playerCharacter, parm)) {
-    //         const element = playerCharacter[parm];
-    //         console.log(parm + " : " + element);
-    //     }
-    // }
-
-    // if (summoners.length)
-    //     console.log("jest");
-    // else
-    //     console.log("ema");
-
-    // playerSummoners = []
-    // enemySummoners = []
-
-    // if (summoners.length)
-    //     console.log("jest");
-    // else
-    //     console.log("ema");
+    
+    backgroundMusic = new createSFX("yes", "yes")
+    console.log(backgroundMusic);
 
     let ile = 25
     while (ile--)
@@ -96,7 +74,24 @@ class Fighter
             playerCharacter.SFX.playSound(playerCharacter.SFX.atack, NORMAL_VOLUME, false)
             enemyCharacter.SFX.playSound(enemyCharacter.SFX.hurtSound, QUITER_VOLUME, false)
 
-            enemyCharacter.hp -= hit
+            if (playerCharacter.crit)
+            {
+                hit = playerCharacter.#effectCrit()
+            }
+            hit -= enemyCharacter.armor
+
+            if (hit > 0)
+                enemyCharacter.hp -= hit
+            else    
+                console.log(`arrmor bock player hit`)
+
+            if (playerCharacter.berserker)
+                if (playerCharacter.berserkerActivateChance >= Math.random())
+                {
+                    playerCharacter.activePassiveEffects = false
+                    playerCharacter.SFX.playSound(playerCharacter.SFX.berserker, QUIET_VOLUME, false)
+                    return playerCharacter.attack()
+                }
         }
         else
         {
@@ -124,7 +119,24 @@ class Fighter
             enemyCharacter.SFX.playSound(enemyCharacter.SFX.atack, NORMAL_VOLUME, false)
             playerCharacter.SFX.playSound(playerCharacter.SFX.hurtSound, QUITER_VOLUME, false)
 
-            playerCharacter.hp -= hit
+            if (enemyCharacter.crit)
+            {
+                hit = enemyCharacter.#effectCrit()
+            }
+            hit -= playerCharacter.armor
+
+            if (hit > 0)
+                playerCharacter.hp -= hit
+            else    
+                console.log(`arrmor bock enemy hit`)
+
+            if (enemyCharacter.berserker)
+                if (enemyCharacter.berserkerActivateChance >= Math.random())
+                {
+                    enemyCharacter.activePassiveEffects = false
+                    enemyCharacter.SFX.playSound(enemyCharacter.SFX.berserker, QUIET_VOLUME, false)
+                    return enemyCharacter.attack()
+                }
         }
 
         console.log(`Player hp: ${playerCharacter.hp}\nEnamy hp: ${enemyCharacter.hp}`);
@@ -172,16 +184,20 @@ class Fighter
     {
         if (turn % 2)
         {
-            if (Math.random() <= playerCharacter.randomCritChance)
+            if (Math.random() <= playerCharacter.critChance)
             {
+                playerCharacter.SFX.playSound(playerCharacter.SFX.crit, QUIET_VOLUME, false)
+                console.log("kryt gracza --------");
                 return hit *= 2
             }
             return hit
         }
         else
         {
-            if (Math.random() <= enemyCharacter.randomCritChance)
+            if (Math.random() <= enemyCharacter.critChance)
             {
+                enemyCharacter.SFX.playSound(enemyCharacter.SFX.crit, QUIET_VOLUME, false)
+                console.log("kryt enemy --------");
                 return hit *= 2
             }
             return hit
@@ -204,25 +220,6 @@ class Fighter
                 return true
             }
             return false
-        }
-    }
-    #effectBerserk() 
-    {
-        if (turn % 2)
-        {
-            if (Math.random() <= playerCharacter.berserkerActivateChance)
-            {
-                playerCharacter.activePassiveEffects = false
-                return playerCharacter.attack()
-            }
-        }
-        else
-        {
-            if (Math.random() <= enemyCharacter.berserkerActivateChance)
-            {
-                enemyCharacter.activePassiveEffects = false
-                return enemyCharacter.attack()
-            }
         }
     }
     #eat()
@@ -295,7 +292,7 @@ class Fighter
             switch (mutagenName)
             {
                 case 'bleed':
-                    this.randomCrit = true
+                    this.crit = true
                     this.randomCritChance = 0.10
                     break
                 case 'crit':
@@ -337,15 +334,13 @@ class PlayerCharacter extends Fighter
                 super(1000, 100, 5, lvl)
                 this.theft = true
                 this.theftCooldown = 5
-                this.bleed = true
-                this.bleedStackAD = 5
                 break;
             case "Czupryńska":
                 super(750, 75, 15, lvl)
                 this.berserker = true
                 this.berserkerActivateChance = 0.5   // że 50%
-                this.randomCrit = true
-                this.randomCritChance = 0.25         // że 25%
+                this.crit = true
+                this.critChance = 0.25         // że 25%
                 break;
             case "Bejrowicz":
                 super(750, 50, 20, lvl)
@@ -505,7 +500,7 @@ class createSFX
                     this.hurtSound = `/SFX/Czupryńska/CzupTakingDamage.mp3`
                     this.win = '/SFX/Czupryńska/CzupWin.mp3'
                     this.rip = '/SFX/Czupryńska/CzupDeath.mp3'
-                    this.berserke = `/SFX/Czupryńska/CzupAnotherAtack.mp3`
+                    this.berserker = `/SFX/Czupryńska/CzupAnotherAtack.mp3`
                     this.crit = '/SFX/Czupryńska/CzupCrit.mp3'
                     break
                 case "Dolega":
@@ -579,13 +574,21 @@ class createSFX
                     this.atack = `/SFX/Summoners/ProgramisciAtack.mp3`
                     this.hurtSound = `/SFX/Summoners/ProgramisciDies.mp3`
                     break
+                default:
+                    this.selectCharacter = `/Music/Background/CharacterSelect.mp3`
+                    this.loginAndSing = `/Music/Background/CreateAcountAndLogin.mp3`
+                    this.gameBackground = `/Music/Background/GameBackground.mp3`
+                    this.menu = `/Music/Background/MainMenu.mp3`
+                    this.bossFight = `/Music/Location/BossFight.mp3`
+                    this.fight = `/Music/Location/Fight.mp3`
+                    this.shopkepper = `/Music/Location/Shopkepper.mp3`
+                    this.village = `/Music/Location/Village.mp3`
             }
         }
     }
 
     playSound(soundSrc, volume, loopStatus)
     {
-        // podmienia src i uruchamia audio
         let audio = new Audio(soundSrc)
         audio.loop = loopStatus
         audio.volume = volume
@@ -638,6 +641,7 @@ const
 //#region other
 
 let
+    backgroundMusic,
     enemyAlive = true,
     stage = 1
 
@@ -734,6 +738,46 @@ function addElement(text)
     adwentureHistoryWrapper.insertBefore(addedHistory, adwentureHistoryWrapper.firstChild)
 }
 
+function newBgMusic()
+{
+    console.log(`ys`);
+    backgroundMusic.playSound(backgroundMusic.menu, QUITER_VOLUME, true)
+}
+
+function startGame()
+{
+    let button = document.querySelector(".gameStartButton")
+    console.log(button);
+    button.style.display = "none"
+
+    genNextStage()
+
+    let mainScene = document.getElementById("mainScene")
+
+    let playerSide = document.createElement("section")
+    let enemySide = document.createElement("section")
+
+    playerSide.className = "playerSide"
+    enemySide.className = "enemySide"
+
+    let playerCardHeader = document.createElement('div')
+    let enemyCardHeader = document.createElement('div')
+
+    let playerName = document.createElement("h3")
+    let enemyName = document.createElement("h3")
+
+    playerName.innerHTML = playerCharacter.character
+    enemyName.innerHTML = enemyCharacter.character
+
+    playerCardHeader.append(playerName)
+    enemyCardHeader.append(enemyName)
+
+    playerSide.append(playerCardHeader)
+    enemySide.append(enemyCardHeader)
+
+    mainScene.append(playerSide, enemySide)
+}
+
 //#endregion
 
 //#region create testing area for game
@@ -776,7 +820,6 @@ function openTestingGround()
     }
 }
 
-
 //#endregion
 
 //#region dialogs
@@ -803,7 +846,7 @@ function openSelectCharacterDialog(character)
             break
         case "Czupryńska":
             console.log("log yes czupa");
-            characterSpecification.innerHTML = `Jest to postać która przez tureta posiada ${manekin.berserkerActivateChance * 100}% na wykonanie kolejnego ataku oraz ${manekin.randomCritChance * 100}% na wykonanie ciosu krytycznego`
+            characterSpecification.innerHTML = `Jest to postać która przez tureta posiada ${manekin.berserkerActivateChance * 100}% na wykonanie kolejnego ataku oraz ${manekin.critChance * 100}% na wykonanie ciosu krytycznego`
             break
         case "Bejrowicz":
             characterSpecification.innerHTML = `Jest to postać która przywoływuje "${manekin.summoners}", za każdą żyjącą przywołaną postać dostaje buffy do statystyk bazowych`

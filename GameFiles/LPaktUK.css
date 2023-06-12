@@ -241,4 +241,37 @@ dialog, #goToGame, #gameBoard, #whatInterface, #characterSpecificationDialog but
   background-color: #ffffff;
   border-radius: 10px;
 }
-
+#mainScene
+{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+#mainScene section
+{
+    width: 50%;
+    height: 100%;
+}
+.playerSide
+{
+    background-color: rgb(224, 224, 255);
+    border-radius: 2.5rem 0px 0px 1rem;
+    border: solid black 1px;
+    border-right: none;
+}
+.enemySide
+{
+    background-color: rgb(255, 216, 216);
+    border-radius: 0px 1rem 2.5rem 0px;
+    border: solid black 1px;
+}
+.gameStartButton
+{
+    cursor: pointer;
+    width: 9rem;
+    height: 9rem;
+    font-size: 2rem;
+    border-radius: 45% 25% 45% 25%;
+    border: none;
+    box-shadow: 1px 1px 1px;
+}
