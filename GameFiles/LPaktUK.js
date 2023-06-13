@@ -3,7 +3,6 @@
 onload = () =>
 {
     console.log("start")
-    console.log("rak");
 
     playerCharacter = new PlayerCharacter(localStorage.getItem("character"), 0);
     console.log(playerCharacter)
@@ -706,7 +705,7 @@ function fight()
             clearInterval(autoPlay)
         }
 
-
+        upadateCharactersStats()
         turn++
     }, 1750)
 }
@@ -752,30 +751,50 @@ function startGame()
 
     genNextStage()
 
-    let mainScene = document.getElementById("mainScene")
+    let playerSide = document.getElementById("playerSide")
+    let playerFightCard = document.getElementById("playerFightCard")
+    let enemySide = document.getElementById("enemySide")
+    let enemyFightCard = document.getElementById("enemyFightCard")
 
-    let playerSide = document.createElement("section")
-    let enemySide = document.createElement("section")
-
-    playerSide.className = "playerSide"
-    enemySide.className = "enemySide"
-
-    let playerCardHeader = document.createElement('div')
-    let enemyCardHeader = document.createElement('div')
-
-    let playerName = document.createElement("h3")
-    let enemyName = document.createElement("h3")
+    let playerName = document.getElementById("playerName")
+    let enemyName = document.getElementById("enemyName")
 
     playerName.innerHTML = playerCharacter.character
     enemyName.innerHTML = enemyCharacter.character
 
-    playerCardHeader.append(playerName)
-    enemyCardHeader.append(enemyName)
+    let playerAvatar = document.getElementById("playerAvatar")
+    let enemyAvatar = document.getElementById("enemyAvatar")
 
-    playerSide.append(playerCardHeader)
-    enemySide.append(enemyCardHeader)
+    playerAvatar.src = `/photos/${playerCharacter.character}.png`
+    enemyAvatar.src = `/photos/${enemyCharacter.character}.png`
 
-    mainScene.append(playerSide, enemySide)
+    upadateCharactersStats()
+
+    playerSide.className = "show"
+    playerFightCard.className = "show"
+    enemySide.className = "show"
+    enemyFightCard.className = "show"
+
+    fight()
+}
+
+function upadateCharactersStats()
+{
+    let playerCardBody = document.getElementById("playerCardBody")
+    let enemyCardBody = document.getElementById("enemyCardBody")
+
+    let playerParms = playerCardBody.querySelectorAll("p")
+    let enemyParms = enemyCardBody.querySelectorAll("p")
+
+    playerParms[0].innerHTML = `Lvl: ${playerCharacter.level}`
+    playerParms[1].innerHTML = `hp: ${playerCharacter.hp}`
+    playerParms[2].innerHTML = `ad: ${playerCharacter.Ad}`
+    playerParms[3].innerHTML = `armor: ${playerCharacter.armor}`
+
+    enemyParms[0].innerHTML = `Lvl: ${enemyCharacter.level}`
+    enemyParms[1].innerHTML = `hp: ${enemyCharacter.hp}`
+    enemyParms[2].innerHTML = `ad: ${enemyCharacter.Ad}`
+    enemyParms[3].innerHTML = `armor: ${enemyCharacter.armor}`
 }
 
 //#endregion

@@ -8,7 +8,7 @@ body
     display: flex;
     justify-content: center;
     align-items: center;
-    overflow: hidden;
+    overflow-x: hidden;
     background: linear-gradient(to left bottom, rgb(255, 80, 80) 0%, rgb(80, 80, 255) 100%);
 }
 form input
@@ -18,6 +18,11 @@ form input
     border-radius: 10px;
     border: none;
     box-shadow: 1px 1px 1px;
+}
+img
+{
+    height: 7.5rem;
+    width: 7.5rem;
 }
 dialog::backdrop
 {
@@ -217,7 +222,7 @@ dialog::backdrop
     font-weight: bold;
     font-size: 1.5rem;
 }
-dialog, #goToGame, #gameBoard, #whatInterface, #characterSpecificationDialog button, #closeAccountStatsDialog, .board, .fightState, .formWrapper, .newGameButton, .loadGameButton, .showAccountStatsButton, .submit, .selectCharacterCard, .selectCharacterPanel, .newCharacterButton, .loginButton
+dialog, #goToGame, #gameBoard, #whatInterface, #characterSpecificationDialog button, #closeAccountStatsDialog, .board, .fightState, .formWrapper, .newGameButton, .loadGameButton, .showAccountStatsButton, .submit, .selectCharacterCard, .selectCharacterPanel, .newCharacterButton, .loginButton, .photoWrapper
 {
     padding: 15px;
     border-radius: 15px;
@@ -241,7 +246,7 @@ dialog, #goToGame, #gameBoard, #whatInterface, #characterSpecificationDialog but
   background-color: #ffffff;
   border-radius: 10px;
 }
-#mainScene
+#mainScene, .fixJu
 {
     display: flex;
     justify-content: center;
@@ -252,14 +257,14 @@ dialog, #goToGame, #gameBoard, #whatInterface, #characterSpecificationDialog but
     width: 50%;
     height: 100%;
 }
-.playerSide
+#playerSide
 {
     background-color: rgb(224, 224, 255);
     border-radius: 2.5rem 0px 0px 1rem;
     border: solid black 1px;
     border-right: none;
 }
-.enemySide
+#enemySide
 {
     background-color: rgb(255, 216, 216);
     border-radius: 0px 1rem 2.5rem 0px;
@@ -274,4 +279,38 @@ dialog, #goToGame, #gameBoard, #whatInterface, #characterSpecificationDialog but
     border-radius: 45% 25% 45% 25%;
     border: none;
     box-shadow: 1px 1px 1px;
+}
+.characterName
+{
+    margin-top: 10%;
+    text-align: center;
+}
+.photoWrapper
+{
+    height: 7.5vh;
+    width: 7.5vw;
+}
+.photoWrapper
+{
+    width: max-content;
+    height: max-content;
+    padding: 0.5rem;
+    background-color: white;
+    margin-left: 0.5rem;
+}
+.show
+{
+    display:show;
+}
+.hide
+{
+    display: none;
+}
+#playerCardHeader
+{
+    height: 20%;
+}
+#playerCardBody p, #enemyCardBody p 
+{
+    margin-left: 2rem;
 }
